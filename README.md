@@ -1,4 +1,13 @@
-# JPEG 5000
+```
+     ██╗██████╗ ███████╗ ██████╗     ███████╗ ██████╗  ██████╗  ██████╗
+     ██║██╔══██╗██╔════╝██╔════╝     ██╔════╝██╔═████╗██╔═████╗██╔═████╗
+     ██║██████╔╝█████╗  ██║  ███╗    ███████╗██║██╔██║██║██╔██║██║██╔██║
+██   ██║██╔═══╝ ██╔══╝  ██║   ██║    ╚════██║████╔╝██║████╔╝██║████╔╝██║
+╚█████╔╝██║     ███████╗╚██████╔╝    ███████║╚██████╔╝╚██████╔╝╚██████╔╝
+ ╚════╝ ╚═╝     ╚══════╝ ╚═════╝     ╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝
+```
+
+> **Neural JPEG Artifact Removal × 5000**
 
 A Photoshop UXP plugin that automates the application of Neural Filter's JPEG Artifact Removal, allowing you to apply the filter multiple times in sequence to progressively improve image quality.
 
