@@ -330,46 +330,36 @@ async function createFrameAnimation() {
         // Show progress
         document.getElementById("progress-section").classList.remove("hidden");
         document.getElementById("result-section").classList.add("hidden");
-        updateProgress(0, 5, "Preparing animation...");
+        updateProgress(0, 100, "Preparing animation...");
 
-        console.log("Creating ping-pong frame animation from layers");
+        console.log("Creating frame animation from layers");
 
         const doc = app.activeDocument;
-        const originalLayers = doc.layers;
-        const totalLayers = originalLayers.length;
+        const totalLayers = doc.layers.length;
 
-        updateProgress(1, 5, "Duplicating layers for reverse playback...");
+        updateProgress(30, 100, "Opening Timeline panel...");
 
-        // Duplicate layers in reverse order (excluding the last one to avoid double frame)
-        // This creates a ping-pong effect: 1->2->3->2->1
-        for (let i = totalLayers - 2; i >= 0; i--) {
-            console.log(`Duplicating layer ${i + 1} for reverse sequence`);
-
-            // Select the layer to duplicate
-            await selectLayerByIndex(i);
-
-            // Duplicate the layer
+        // Step 1: Ensure Timeline panel is visible and create timeline
+        try {
             await action.batchPlay([
                 {
-                    "_obj": "duplicate",
-                    "_target": [
-                        {
-                            "_ref": "layer",
-                            "_enum": "ordinal",
-                            "_value": "targetEnum"
-                        }
-                    ]
+                    "_obj": "make",
+                    "null": {
+                        "_ref": "timeline"
+                    }
                 }
             ], {
                 modalBehavior: "execute"
             });
-
-            await sleep(100); // Small delay to ensure layer is created
+        } catch (e) {
+            console.log("Timeline may already exist, continuing...");
         }
 
-        updateProgress(2, 5, "Creating timeline from layers...");
+        await sleep(500);
 
-        // Create frames from all layers (original + reversed)
+        updateProgress(60, 100, "Creating frames from layers...");
+
+        // Step 2: Make frames from layers
         await action.batchPlay([
             {
                 "_obj": "animationFramesFromLayers"
@@ -378,36 +368,38 @@ async function createFrameAnimation() {
             modalBehavior: "execute"
         });
 
-        updateProgress(3, 5, "Setting up looping...");
         await sleep(500);
 
-        // Set timeline to loop forever
+        console.log(`Created ${totalLayers} frames from layers`);
+
+        updateProgress(90, 100, "Setting loop mode to forever...");
+
+        // Step 3: Set to loop forever
         await action.batchPlay([
             {
                 "_obj": "set",
                 "_target": [
                     {
+                        "_ref": "property",
+                        "_property": "animationLoopMode"
+                    },
+                    {
                         "_ref": "timeline"
                     }
                 ],
                 "to": {
-                    "_obj": "timeline",
-                    "loop": {
-                        "_enum": "animationLoopType",
-                        "_value": "forever"
-                    }
+                    "_enum": "animationLoopMode",
+                    "_value": "forever"
                 }
             }
         ], {
             modalBehavior: "execute"
         });
 
-        const finalFrameCount = (totalLayers * 2) - 2; // Original layers + reversed (minus duplicates at ends)
+        console.log(`Timeline animation complete: ${totalLayers} frames`);
 
-        console.log(`Created ping-pong animation with ${finalFrameCount} frames (${totalLayers} layers x 2 directions)`);
-
-        updateProgress(5, 5, "Animation ready!");
-        showResult(`Ping-pong animation created! ${totalLayers} layers → ${finalFrameCount} frames (loops: 1→${totalLayers}→1). Use Window > Timeline to preview.`);
+        updateProgress(100, 100, "Animation ready!");
+        showResult(`Timeline animation created with ${totalLayers} frames (loops forever). Check the Timeline panel to preview and export!`);
 
     } catch (error) {
         console.error("Error creating animation:", error);
