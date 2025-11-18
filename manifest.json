@@ -1,0 +1,48 @@
+{
+  "manifestVersion": 5,
+  "id": "com.jpeg5000.plugin",
+  "name": "JPEG 5000",
+  "version": "1.0.0",
+  "main": "index.html",
+  "host": [
+    {
+      "app": "PS",
+      "minVersion": "24.0.0",
+      "data": {
+        "apiVersion": 2
+      }
+    }
+  ],
+  "entryPoints": [
+    {
+      "type": "panel",
+      "id": "jpeg5000panel",
+      "label": {
+        "default": "JPEG 5000"
+      }
+    }
+  ],
+  "requiredPermissions": {
+    "localFileSystem": "fullAccess",
+    "allowCodeGenerationFromStrings": true
+  },
+  "icons": [
+    {
+      "width": 23,
+      "height": 23,
+      "path": "icons/icon.png",
+      "scale": [
+        1,
+        2
+      ],
+      "theme": [
+        "darkest",
+        "dark",
+        "medium",
+        "lightest",
+        "light",
+        "all"
+      ]
+    }
+  ]
+}
