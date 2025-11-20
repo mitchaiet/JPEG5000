@@ -446,16 +446,17 @@ async function createFrameAnimation() {
 
         await sleep(500);
 
-        updateProgress(40, 100, "Closing timeline...");
+        updateProgress(40, 100, "Clearing timeline...");
 
-        // Step 2: Close the timeline/animation panel to reset it
+        // Step 2: Delete the existing timeline/animation to reset it
         try {
             await action.batchPlay([
                 {
                     "_obj": "delete",
-                    "null": [
+                    "_target": [
                         {
-                            "_ref": "timeline"
+                            "_enum": "ordinal",
+                            "_ref": "animationClass"
                         }
                     ]
                 }
