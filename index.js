@@ -465,9 +465,34 @@ async function createFrameAnimation() {
 
         await sleep(500);
 
-        updateProgress(60, 100, "Converting layers to frames...");
+        updateProgress(50, 100, "Clearing existing frames...");
 
-        // Step 3: Make frames from layers (this updates/rebuilds frames from all layers)
+        // Step 3: Delete all existing frames to start fresh
+        try {
+            await action.batchPlay([
+                {
+                    "_obj": "delete",
+                    "null": [
+                        {
+                            "_ref": "animationFrameClass",
+                            "_enum": "ordinal",
+                            "_value": "allEnum"
+                        }
+                    ]
+                }
+            ], {
+                modalBehavior: "execute"
+            });
+            console.log("Cleared existing frames");
+        } catch (e) {
+            console.log("No existing frames to clear or error:", e.message);
+        }
+
+        await sleep(500);
+
+        updateProgress(70, 100, "Converting layers to frames...");
+
+        // Step 4: Make frames from layers (rebuilds all frames from all layers)
         await action.batchPlay([
             {
                 "_obj": "animationFramesFromLayers"
