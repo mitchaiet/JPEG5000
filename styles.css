@@ -44,9 +44,9 @@ h1 {
 }
 
 .ascii-logo {
-    margin: 0 0 6px 0;
-    padding: 6px;
-    font-size: 9px;
+    margin: 0 0 8px 0;
+    padding: 4px;
+    font-size: 6px;
     line-height: 1.15;
     color: #ffffff;
     font-family: 'Courier New', Courier, monospace;
