@@ -19,6 +19,18 @@
       "id": "jpeg5000panel",
       "label": {
         "default": "JPEG 5000"
+      },
+      "minimumSize": {
+        "width": 400,
+        "height": 500
+      },
+      "maximumSize": {
+        "width": 600,
+        "height": 1000
+      },
+      "preferredDockedSize": {
+        "width": 450,
+        "height": 600
       }
     }
   ],
