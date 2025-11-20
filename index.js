@@ -465,34 +465,43 @@ async function createFrameAnimation() {
 
         await sleep(500);
 
-        updateProgress(50, 100, "Clearing existing frames...");
+        updateProgress(50, 100, "Switching to video timeline...");
 
-        // Step 3: Delete all existing frames to start fresh
+        // Step 3: Convert to video timeline first (this clears frame timeline)
         try {
             await action.batchPlay([
                 {
-                    "_obj": "delete",
-                    "null": [
-                        {
-                            "_ref": "animationFrameClass",
-                            "_enum": "ordinal",
-                            "_value": "allEnum"
-                        }
-                    ]
+                    "_obj": "animationFramesToVideoTimeline"
                 }
             ], {
                 modalBehavior: "execute"
             });
-            console.log("Cleared existing frames");
+            console.log("Converted to video timeline");
+            await sleep(500);
         } catch (e) {
-            console.log("No existing frames to clear or error:", e.message);
+            console.log("Already in video timeline or error:", e.message);
         }
 
-        await sleep(500);
+        updateProgress(60, 100, "Converting back to frame animation...");
 
-        updateProgress(70, 100, "Converting layers to frames...");
+        // Step 4: Convert back to frame animation (this creates fresh timeline)
+        try {
+            await action.batchPlay([
+                {
+                    "_obj": "videoTimelineToAnimationFrames"
+                }
+            ], {
+                modalBehavior: "execute"
+            });
+            console.log("Converted back to frame animation");
+            await sleep(500);
+        } catch (e) {
+            console.log("Error converting to frames:", e.message);
+        }
 
-        // Step 4: Make frames from layers (rebuilds all frames from all layers)
+        updateProgress(75, 100, "Building frames from all layers...");
+
+        // Step 5: Make frames from layers (rebuilds all frames from all layers)
         await action.batchPlay([
             {
                 "_obj": "animationFramesFromLayers"
@@ -501,7 +510,7 @@ async function createFrameAnimation() {
             modalBehavior: "execute"
         });
 
-        console.log(`Converted ${totalLayers} layers to timeline frames`);
+        console.log(`Converted all ${totalLayers} layers to timeline frames`);
         await sleep(500);
 
         console.log(`Created ${totalLayers} frames from layers`);
