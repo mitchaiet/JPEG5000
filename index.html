@@ -36,10 +36,17 @@
                     <option value="high" selected>High</option>
                 </select>
             </div>
+            <div class="form-row">
+                <label for="continue-layer">Continue from:</label>
+                <select id="continue-layer">
+                    <option value="">Current Active Layer</option>
+                </select>
+            </div>
         </div>
 
         <div class="section">
             <sp-button id="process-btn" variant="cta">Process Image</sp-button>
+            <sp-button id="refresh-layers-btn" variant="secondary">Refresh Layers</sp-button>
         </div>
 
         <div class="section">

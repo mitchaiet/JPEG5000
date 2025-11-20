@@ -17,13 +17,49 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("process-btn").addEventListener("click", () => {
         core.executeAsModal(processImage, { commandName: "JPEG 5000 Process" });
     });
+    document.getElementById("refresh-layers-btn").addEventListener("click", () => {
+        core.executeAsModal(refreshLayers, { commandName: "JPEG 5000 Refresh Layers" });
+    });
     document.getElementById("export-layers-btn").addEventListener("click", () => {
         core.executeAsModal(exportLayersToFolder, { commandName: "JPEG 5000 Export Layers" });
     });
     document.getElementById("create-timeline-btn").addEventListener("click", () => {
         core.executeAsModal(createFrameAnimation, { commandName: "JPEG 5000 Create Animation" });
     });
+
+    // Load layers on startup if there's an active document
+    core.executeAsModal(refreshLayers, { commandName: "JPEG 5000 Refresh Layers" }).catch(() => {});
 });
+
+async function refreshLayers() {
+    try {
+        const select = document.getElementById("continue-layer");
+
+        // Clear existing options except the first one
+        select.innerHTML = '<option value="">Current Active Layer</option>';
+
+        // Check if there's an active document
+        if (!app.activeDocument) {
+            return;
+        }
+
+        const doc = app.activeDocument;
+        const layers = doc.layers;
+
+        // Add each layer to the dropdown
+        for (let i = 0; i < layers.length; i++) {
+            const layer = layers[i];
+            const option = document.createElement("option");
+            option.value = i;
+            option.textContent = layer.name;
+            select.appendChild(option);
+        }
+
+        console.log(`Loaded ${layers.length} layers into dropdown`);
+    } catch (error) {
+        console.error("Error refreshing layers:", error);
+    }
+}
 
 async function selectFile() {
     try {
@@ -39,16 +75,26 @@ async function selectFile() {
 }
 
 async function processImage() {
-    if (!selectedFile) {
-        showError("Please select an image file first");
-        return;
-    }
-
     const iterations = parseInt(document.getElementById("iterations").value);
-    const strength = document.getElementById("strength").value;
+    const strength = document.getElementById("strength").value);
+    const continueLayerIndex = document.getElementById("continue-layer").value;
 
     if (isNaN(iterations) || iterations < 1 || iterations > 5000) {
         showError("Please enter a valid number of iterations (1-5000)");
+        return;
+    }
+
+    const isContinuingFromLayer = continueLayerIndex !== "";
+
+    // If continuing from layer, we need an active document
+    if (isContinuingFromLayer && !app.activeDocument) {
+        showError("No active document. Please open a document first to continue from a layer.");
+        return;
+    }
+
+    // If not continuing, we need a file selected
+    if (!isContinuingFromLayer && !selectedFile) {
+        showError("Please select an image file first");
         return;
     }
 
@@ -58,17 +104,40 @@ async function processImage() {
     document.getElementById("process-btn").disabled = true;
 
     try {
-        // Open the selected file
-        updateProgress(0, iterations + 1, "Opening image...");
-        console.log("Opening image:", selectedFile.name);
-        await openFile(selectedFile);
-        console.log("Image opened successfully");
+        let startingLayerNumber = 0;
 
-        await sleep(1000); // Wait for image to fully load
+        if (isContinuingFromLayer) {
+            // Continue from selected layer
+            const layerIndex = parseInt(continueLayerIndex);
+            const doc = app.activeDocument;
+            const selectedLayer = doc.layers[layerIndex];
+
+            console.log(`Continuing from layer: ${selectedLayer.name} (index: ${layerIndex})`);
+
+            // Extract layer number from name if it follows the pattern "Layer X"
+            const layerNameMatch = selectedLayer.name.match(/Layer (\d+)/);
+            if (layerNameMatch) {
+                startingLayerNumber = parseInt(layerNameMatch[1]);
+                console.log(`Detected starting layer number: ${startingLayerNumber}`);
+            }
+
+            // Select the chosen layer to start processing from
+            await selectLayerByIndex(layerIndex);
+            updateProgress(0, iterations, `Continuing from ${selectedLayer.name}...`);
+            await sleep(500);
+        } else {
+            // Open the selected file
+            updateProgress(0, iterations + 1, "Opening image...");
+            console.log("Opening image:", selectedFile.name);
+            await openFile(selectedFile);
+            console.log("Image opened successfully");
+            await sleep(1000); // Wait for image to fully load
+        }
 
         // Apply the JPEG Artifact Removal filter multiple times
         for (let i = 0; i < iterations; i++) {
             const currentIteration = i + 1;
+            const expectedLayerNumber = startingLayerNumber + currentIteration;
             console.log(`\n=== Starting iteration ${currentIteration} of ${iterations} ===`);
 
             updateProgress(currentIteration, iterations + 1, `Iteration ${currentIteration}/${iterations}: Selecting layer...`);
@@ -83,6 +152,7 @@ async function processImage() {
             await applyJPEGArtifactRemoval(strength);
 
             console.log(`Filter applied successfully (iteration ${currentIteration})`);
+            console.log(`Expected new layer: Layer ${expectedLayerNumber}`);
             updateProgress(currentIteration, iterations + 1, `Iteration ${currentIteration}/${iterations}: Processing complete, waiting...`);
 
             // Wait for the filter to fully complete and the new layer to be created
@@ -91,7 +161,15 @@ async function processImage() {
 
         updateProgress(iterations + 1, iterations + 1, "Complete!");
         console.log("\n=== All iterations complete! ===");
-        showResult(`Successfully applied JPEG Artifact Removal ${iterations} time(s)`);
+
+        if (isContinuingFromLayer) {
+            showResult(`Successfully applied JPEG Artifact Removal ${iterations} time(s) from layer ${startingLayerNumber}`);
+        } else {
+            showResult(`Successfully applied JPEG Artifact Removal ${iterations} time(s)`);
+        }
+
+        // Refresh the layer list
+        await refreshLayers();
 
     } catch (error) {
         console.error("Error processing image:", error);
