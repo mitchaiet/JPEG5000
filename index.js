@@ -447,9 +447,32 @@ async function createFrameAnimation() {
 
         await sleep(500);
 
-        updateProgress(40, 100, "Creating frame animation...");
+        updateProgress(40, 100, "Closing timeline...");
 
-        // Step 2: Create frame animation (converts to frame-based timeline)
+        // Step 2: Close the timeline/animation panel to reset it
+        try {
+            await action.batchPlay([
+                {
+                    "_obj": "delete",
+                    "null": [
+                        {
+                            "_ref": "timeline"
+                        }
+                    ]
+                }
+            ], {
+                modalBehavior: "execute"
+            });
+            console.log("Deleted existing timeline");
+        } catch (e) {
+            console.log("No timeline to delete:", e.message);
+        }
+
+        await sleep(500);
+
+        updateProgress(60, 100, "Creating fresh frame animation...");
+
+        // Step 3: Create a new frame animation from scratch
         try {
             await action.batchPlay([
                 {
@@ -458,33 +481,16 @@ async function createFrameAnimation() {
             ], {
                 modalBehavior: "execute"
             });
-            console.log("Frame animation mode created");
+            console.log("Created new frame animation");
         } catch (e) {
-            console.log("Frame animation may already exist, continuing...");
+            console.log("Error creating frame animation:", e.message);
         }
 
         await sleep(500);
 
-        updateProgress(50, 100, "Flattening frames to layers...");
+        updateProgress(80, 100, "Converting all layers to frames...");
 
-        // Step 3: First flatten all existing frames to layers (this resets the timeline state)
-        try {
-            await action.batchPlay([
-                {
-                    "_obj": "animationFramesToLayers"
-                }
-            ], {
-                modalBehavior: "execute"
-            });
-            console.log("Flattened frames to layers");
-            await sleep(500);
-        } catch (e) {
-            console.log("No frames to flatten or already layers:", e.message);
-        }
-
-        updateProgress(70, 100, "Building frames from all layers...");
-
-        // Step 4: Now create frames from ALL layers (this should include all 30 layers)
+        // Step 4: Convert ALL layers to frames (should now pick up all 30 layers)
         await action.batchPlay([
             {
                 "_obj": "animationFramesFromLayers"
@@ -493,7 +499,7 @@ async function createFrameAnimation() {
             modalBehavior: "execute"
         });
 
-        console.log(`Created frames from all ${totalLayers} layers`);
+        console.log(`Converted all ${totalLayers} layers to frames`);
         await sleep(500);
 
         console.log(`Created ${totalLayers} frames from layers`);
