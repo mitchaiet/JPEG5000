@@ -135,6 +135,12 @@ async function continueFromSelectedLayer() {
 
         console.log(`Continuing from layer: ${activeLayer.name}`);
 
+        // Make sure the selected layer is visible
+        if (!activeLayer.visible) {
+            console.log(`Selected layer was hidden, making it visible`);
+            activeLayer.visible = true;
+        }
+
         let startingLayerNumber = 0;
 
         // Extract layer number from name if it follows the pattern "Layer X"
