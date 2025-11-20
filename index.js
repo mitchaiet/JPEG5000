@@ -86,7 +86,6 @@ async function processImage() {
             await applyJPEGArtifactRemoval(strength);
 
             console.log(`Filter applied successfully (iteration ${currentIteration})`);
-            console.log(`Expected new layer: Layer ${expectedLayerNumber}`);
             updateProgress(currentIteration, iterations + 1, `Iteration ${currentIteration}/${iterations}: Processing complete, waiting...`);
 
             // Wait for the filter to fully complete and the new layer to be created
