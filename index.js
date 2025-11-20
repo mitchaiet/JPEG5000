@@ -426,29 +426,48 @@ async function createFrameAnimation() {
         const doc = app.activeDocument;
         const totalLayers = doc.layers.length;
 
-        updateProgress(30, 100, "Opening Timeline panel...");
+        updateProgress(20, 100, "Opening Timeline panel...");
 
-        // Step 1: Ensure Timeline panel is visible and create timeline
+        // Step 1: Show the Timeline panel (Window > Timeline)
         try {
             await action.batchPlay([
                 {
-                    "_obj": "make",
+                    "_obj": "show",
                     "null": {
-                        "_ref": "timeline"
+                        "_ref": "animationClass"
                     }
                 }
             ], {
                 modalBehavior: "execute"
             });
+            console.log("Timeline panel shown");
         } catch (e) {
-            console.log("Timeline may already exist, continuing...");
+            console.log("Timeline panel may already be visible:", e.message);
         }
 
         await sleep(500);
 
-        updateProgress(60, 100, "Creating frames from layers...");
+        updateProgress(40, 100, "Creating frame animation...");
 
-        // Step 2: Make frames from layers
+        // Step 2: Create frame animation (converts to frame-based timeline)
+        try {
+            await action.batchPlay([
+                {
+                    "_obj": "makeFrameAnimation"
+                }
+            ], {
+                modalBehavior: "execute"
+            });
+            console.log("Frame animation mode created");
+        } catch (e) {
+            console.log("Frame animation may already exist, continuing...");
+        }
+
+        await sleep(500);
+
+        updateProgress(60, 100, "Converting layers to frames...");
+
+        // Step 3: Make frames from layers (this updates/rebuilds frames from all layers)
         await action.batchPlay([
             {
                 "_obj": "animationFramesFromLayers"
@@ -457,6 +476,7 @@ async function createFrameAnimation() {
             modalBehavior: "execute"
         });
 
+        console.log(`Converted ${totalLayers} layers to timeline frames`);
         await sleep(500);
 
         console.log(`Created ${totalLayers} frames from layers`);
