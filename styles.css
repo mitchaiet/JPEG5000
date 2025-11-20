@@ -31,8 +31,9 @@ body {
 
 .header {
     text-align: center;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
     width: 100%;
+    flex-shrink: 0;
 }
 
 h1 {
@@ -57,6 +58,7 @@ h1 {
     display: block;
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 4px;
+    flex-shrink: 0;
 }
 
 .subtitle {
