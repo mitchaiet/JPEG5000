@@ -14,7 +14,7 @@ A Photoshop UXP plugin that automates the application of Neural Filter's JPEG Ar
 ## Examples
 
 ### Before Processing
-![Before Processing](examples/sea-ocean-water-waves-preview.jpg)
+![Before Processing](examples/hq720.jpg)
 
 ### Animated Result (100 Iterations)
 ![JPEG 5000 Animation](examples/hq720_5mb_v3.gif)
