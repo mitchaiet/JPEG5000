@@ -17,7 +17,7 @@ A Photoshop UXP plugin that automates the application of Neural Filter's JPEG Ar
 ![Before Processing](examples/sea-ocean-water-waves-preview.jpg)
 
 ### Animated Result (100 Iterations)
-![JPEG 5000 Animation](examples/sea-ocean-water-waves-preview.gif)
+![JPEG 5000 Animation](examples/hq720_FINAL_UNDER5MB.gif)
 
 The animation above shows the progressive improvement from applying JPEG Artifact Removal 100 times, demonstrating the cumulative effect of the neural filter. Use the "Create Frame Animation" and "Export as GIF" features to create your own animations.
 
