@@ -43,6 +43,22 @@ h1 {
     color: #ffffff;
 }
 
+.ascii-logo {
+    margin: 0 0 6px 0;
+    padding: 6px;
+    font-size: 9px;
+    line-height: 1.15;
+    color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+    white-space: pre;
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: block;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
 .subtitle {
     margin: 0;
     padding: 0;
