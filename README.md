@@ -15,15 +15,15 @@ A Photoshop UXP plugin that automates the application of Neural Filter's JPEG Ar
 
 ### Example 1: Ocean Sunset
 
-![Ocean Before](examples/sea-ocean-water-waves-preview.jpg)
+<img src="examples/sea-ocean-water-waves-preview.jpg" width="720">
 
-![Ocean Animation](examples/sea-ocean-water-waves-preview.gif)
+<img src="examples/sea-ocean-water-waves-preview.gif" width="720">
 
-### Example 2: High Quality Test
+### Example 2: Crayon Landscape
 
-![HQ720 Before](examples/hq720.jpg)
+<img src="examples/hq720.jpg" width="720">
 
-![HQ720 Animation](examples/hq720_5mb_v3.gif)
+<img src="examples/hq720_5mb_v3.gif" width="720">
 
 The animations above demonstrate the progressive improvement from iterative JPEG artifact destruction using Photoshop's Neural Filter.
 
