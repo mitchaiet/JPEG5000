@@ -122,8 +122,6 @@ This error means the batchPlay command couldn't automatically trigger the neural
 2. **Photoshop version**: Make sure you're using Photoshop 2023 or later
 3. **API limitations**: Neural Filters have limited scriptability
 
-**Workaround**: You may need to record a Photoshop Action for this workflow instead (see Alternative Approach below)
-
 ### Plugin doesn't appear in Photoshop
 
 - Make sure the plugin is loaded in UXP Developer Tool
@@ -134,21 +132,6 @@ This error means the batchPlay command couldn't automatically trigger the neural
 
 - Make sure you granted file system permissions
 - Try reloading the plugin in UXP Developer Tool
-
-## Alternative Approach: Photoshop Action
-
-If the plugin has trouble triggering the neural filter automatically, you can use a Photoshop Action:
-
-1. Open Photoshop
-2. Window > Actions (or Alt+F9)
-3. Create a new action: "JPEG 5000 Single Pass"
-4. **Start Recording**
-5. Filter > Neural Filters > JPEG Artifacts Removal
-   - Strength: High
-   - Output: New Layer
-   - Click OK
-6. **Stop Recording**
-7. Now you can manually run this action multiple times, or use Photoshop's Batch processing
 
 ## Development
 
