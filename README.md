@@ -170,11 +170,3 @@ jpeg-5000/
 ## License
 
 MIT License - feel free to modify and distribute
-
-## Credits
-
-Created to automate the iterative application of Photoshop's JPEG Artifact Removal neural filter.
-
----
-
-**Note**: This plugin is a starting point. Due to Adobe's limited documentation on neural filter automation, you may need to experiment with the batchPlay commands or use Photoshop Actions as an alternative approach.
