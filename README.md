@@ -42,31 +42,41 @@ The animations above demonstrate the progressive improvement from iterative JPEG
 
 - Adobe Photoshop 2023 (v24.0.0) or later
 - Neural Filters enabled and JPEG Artifact Removal filter downloaded
-- UXP Developer Tool (for installation)
 
 ## Installation
 
-### Step 1: Enable Neural Filters
+### Option 1: Install from Release (Recommended)
+
+1. Download the latest `com.jpeg5000.plugin_PS.ccx` file from [Releases](https://github.com/mitchaiet/JPEG5000/releases)
+2. Double-click the CCX file to install via Adobe Creative Cloud
+3. Open Photoshop 2023 or later
+4. Go to **Plugins > JPEG 5000** to open the panel
+
+### Option 2: Install from Source (For Development)
+
+**Requirements**: UXP Developer Tool
+
+#### Step 1: Enable Neural Filters
 
 1. Open Photoshop
 2. Go to **Filter > Neural Filters**
 3. Make sure **JPEG Artifacts Removal** filter is downloaded and enabled
 4. Close the Neural Filters panel
 
-### Step 2: Install UXP Developer Tool
+#### Step 2: Install UXP Developer Tool
 
 1. Download and install the [UXP Developer Tool](https://developer.adobe.com/photoshop/uxp/2022/guides/devtool/)
 2. Launch the UXP Developer Tool
 
-### Step 3: Load the Plugin
+#### Step 3: Load the Plugin
 
 1. In UXP Developer Tool, click **Add Plugin**
-2. Navigate to this folder: `/Users/mitchaiet/Documents/_Development/GitHub/jpeg-5000`
+2. Navigate to the cloned repository folder
 3. Select the `manifest.json` file
 4. Click **Load** to load the plugin
 5. Click the **•••** menu next to the plugin and select **Watch**
 
-### Step 4: Enable in Photoshop
+#### Step 4: Enable in Photoshop
 
 1. Open Photoshop
 2. Go to **Plugins > JPEG 5000** to open the panel
