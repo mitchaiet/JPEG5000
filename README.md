@@ -184,15 +184,6 @@ jpeg-5000/
 3. **No batch processing**: Currently processes one image at a time
 4. **Layer naming**: Photoshop auto-names layers (Layer 1, Layer 2, etc.)
 
-## Future Enhancements
-
-- [ ] Batch process multiple images
-- [ ] Custom layer naming
-- [ ] Save output automatically
-- [ ] Support for other neural filters
-- [ ] Preset configurations
-- [ ] Before/after comparison view
-
 ## License
 
 MIT License - feel free to modify and distribute
